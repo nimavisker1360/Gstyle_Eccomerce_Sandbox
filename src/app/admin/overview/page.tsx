@@ -14,13 +14,13 @@ export default async function AdminOverviewPage() {
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <AdminNavigation />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             پنل مدیریت فروشگاه
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm md:text-base text-gray-600">
             مدیریت سفارشات و نظارت بر فعالیت‌های فروشگاه
           </p>
         </div>
@@ -29,13 +29,13 @@ export default async function AdminOverviewPage() {
         <AdminStats />
 
         {/* Orders Table */}
-        <div className="mt-8">
+        <div className="mt-6 md:mt-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">
+            <div className="px-4 md:px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900">
                 سفارشات مشتریان
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-xs md:text-sm text-gray-600 mt-1">
                 مشاهده و مدیریت تمام سفارشات ثبت شده
               </p>
             </div>

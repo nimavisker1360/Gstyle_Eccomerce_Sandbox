@@ -143,23 +143,32 @@ export default function AdminStats() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
       {statCards.map((stat, index) => {
         const IconComponent = stat.icon;
         return (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 md:p-4 hover:shadow-md transition-shadow duration-200 min-h-[120px] md:min-h-[140px]"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">
+            <div className="flex flex-col h-full">
+              {/* آیکون بالا */}
+              <div className="flex justify-center mb-2 md:mb-3">
+                <div className={`${stat.bgColor} p-2 md:p-3 rounded-full`}>
+                  <IconComponent
+                    className={`w-5 h-5 md:w-6 md:h-6 ${stat.textColor}`}
+                  />
+                </div>
+              </div>
+
+              {/* متن‌ها پایین */}
+              <div className="text-center flex-1 flex flex-col justify-center">
+                <p className="text-xs md:text-sm font-medium text-gray-600 mb-1 md:mb-2 leading-tight px-1">
                   {stat.title}
                 </p>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-              </div>
-              <div className={`${stat.bgColor} p-3 rounded-full`}>
-                <IconComponent className={`w-6 h-6 ${stat.textColor}`} />
+                <p className="text-base md:text-xl lg:text-2xl font-bold text-gray-900 leading-tight">
+                  {stat.value}
+                </p>
               </div>
             </div>
           </div>
