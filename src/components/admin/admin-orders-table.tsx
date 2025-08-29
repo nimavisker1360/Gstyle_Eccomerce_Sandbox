@@ -162,6 +162,8 @@ export default function AdminOrdersTable() {
         setOrders(orders.filter((order) => order._id !== orderId));
         // Refresh the data
         fetchOrders();
+        // Notify other components about the order update
+        window.dispatchEvent(new CustomEvent("adminOrdersUpdated"));
       } else {
         const error = await response.json();
         alert(`خطا در حذف سفارش: ${error.error}`);

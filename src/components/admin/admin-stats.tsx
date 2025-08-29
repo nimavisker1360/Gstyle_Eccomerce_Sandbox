@@ -30,22 +30,37 @@ export default function AdminStats() {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch("/api/admin/stats");
-        if (response.ok) {
-          const data = await response.json();
-          setStats(data);
-        }
-      } catch (error) {
-        console.error("خطا در دریافت آمار:", error);
-      } finally {
-        setLoading(false);
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/admin/stats");
+      if (response.ok) {
+        const data = await response.json();
+        setStats(data);
       }
+    } catch (error) {
+      console.error("خطا در دریافت آمار:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  // Listen for order updates across the admin panel
+  useEffect(() => {
+    const handleOrderUpdate = () => {
+      fetchStats();
     };
 
-    fetchStats();
+    // Listen for custom events from other components
+    window.addEventListener("adminOrdersUpdated", handleOrderUpdate);
+
+    return () => {
+      window.removeEventListener("adminOrdersUpdated", handleOrderUpdate);
+    };
   }, []);
 
   const formatCurrency = (amount: number) => {
@@ -153,4 +168,3 @@ export default function AdminStats() {
     </div>
   );
 }
-
