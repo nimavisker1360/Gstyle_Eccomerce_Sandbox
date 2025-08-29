@@ -27,6 +27,8 @@ export interface ITransaction extends Document {
     size?: string;
     color?: string;
     note?: string;
+    // اضافه کردن فیلد link
+    link?: string;
   }>;
   metadata?: Record<string, any>;
   verifiedAt?: Date;
@@ -45,6 +47,8 @@ const ProductSchema = new Schema(
     size: { type: String },
     color: { type: String },
     note: { type: String },
+    // اضافه کردن فیلد link برای لینک محصول خارجی
+    link: { type: String },
   },
   { _id: false }
 );

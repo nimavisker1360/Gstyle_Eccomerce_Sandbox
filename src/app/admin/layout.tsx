@@ -14,3 +14,4 @@ export default async function AdminLayout({
 
   return <div className="min-h-screen bg-gray-50">{children}</div>;
 }
+

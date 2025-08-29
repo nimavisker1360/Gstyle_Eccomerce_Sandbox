@@ -66,6 +66,8 @@ export default function ShoppingProductCard({
         price: round2(convertTRYToToman(product.price)),
         size: undefined,
         color: undefined,
+        // اضافه کردن فیلد link
+        link: product.link || product.googleShoppingLink,
       };
 
       await addItem(orderItem, 1);

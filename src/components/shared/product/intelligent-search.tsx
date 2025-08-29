@@ -207,7 +207,12 @@ export default function IntelligentSearch({
         clientId: generateId(),
         product: product.id,
         name: product.title,
-        slug: product.id,
+        slug: product.title
+          .toLowerCase()
+          .replace(/[^\w\s-]+/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .replace(/-+/g, "-"),
         category: product.category || "عمومی",
         quantity: 1,
         countInStock: 10, // Default stock
@@ -215,6 +220,8 @@ export default function IntelligentSearch({
         price: round2(convertTRYToToman(product.price)),
         size: "متوسط", // Default size
         color: "مشکی", // Default color
+        // persist external product link if present
+        link: product.link || product.googleShoppingLink,
       };
 
       addItem(cartItem, 1);

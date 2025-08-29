@@ -104,6 +104,8 @@ export const OrderItemSchema = z.object({
   color: z.string().optional(),
   // Optional customer note/question for support
   note: z.string().max(800).optional(),
+  // اضافه کردن فیلد link برای لینک محصول
+  link: z.string().optional(),
 });
 export const OrderInputSchema = z.object({
   user: z.union([

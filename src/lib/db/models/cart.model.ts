@@ -12,6 +12,8 @@ export interface ICartItem {
   note?: string;
   product: string; // product id
   countInStock: number;
+  // اضافه کردن فیلد link برای لینک محصول
+  link?: string;
 }
 
 export interface ICartDoc extends Document {
@@ -48,6 +50,8 @@ const CartItemSchema = new Schema<ICartItem>(
     note: { type: String },
     product: { type: String, required: true },
     countInStock: { type: Number, required: true },
+    // اضافه کردن فیلد link برای لینک محصول
+    link: { type: String },
   },
   { _id: false }
 );

@@ -86,27 +86,53 @@ export default function CartPage() {
                       key={item.clientId}
                       className="order-item-row flex flex-col md:flex-row justify-between py-4 gap-4"
                     >
-                      <Link href={`/product/${item.slug}`}>
-                        <div className="relative w-40 h-40">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            sizes="20vw"
-                            style={{
-                              objectFit: "contain",
-                            }}
-                          />
-                        </div>
-                      </Link>
+                      {item.link ? (
+                        <Link href={item.link} target="_blank">
+                          <div className="relative w-40 h-40">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="20vw"
+                              style={{
+                                objectFit: "contain",
+                              }}
+                            />
+                          </div>
+                        </Link>
+                      ) : (
+                        <Link href={`/product/${item.slug}`}>
+                          <div className="relative w-40 h-40">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="20vw"
+                              style={{
+                                objectFit: "contain",
+                              }}
+                            />
+                          </div>
+                        </Link>
+                      )}
 
                       <div className="flex-1 space-y-4 text-right">
-                        <Link
-                          href={`/product/${item.slug}`}
-                          className="text-lg hover:no-underline  "
-                        >
-                          {item.name}
-                        </Link>
+                        {item.link ? (
+                          <Link
+                            href={item.link}
+                            target="_blank"
+                            className="text-lg hover:no-underline text-blue-600 hover:text-blue-800"
+                          >
+                            {item.name} (مشاهده در فروشگاه)
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`/product/${item.slug}`}
+                            className="text-lg hover:no-underline"
+                          >
+                            {item.name}
+                          </Link>
+                        )}
                         <div>
                           <p className="text-sm">
                             <span className="font-bold">رنگ: </span>{" "}

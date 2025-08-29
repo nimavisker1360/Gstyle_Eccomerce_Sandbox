@@ -284,6 +284,8 @@ async function getCartProducts(userId: string) {
       size: item.size,
       color: item.color,
       note: item.note,
+      // اضافه کردن فیلد link
+      link: item.link,
     }));
   } catch (error) {
     console.error("Error getting cart products:", error);

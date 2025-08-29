@@ -27,6 +27,8 @@ interface OrderItem {
   color?: string;
   note?: string;
   category: string;
+  // اضافه کردن فیلد link
+  link?: string;
 }
 
 interface ShippingAddress {
@@ -336,14 +338,27 @@ export default function AdminOrdersTable() {
                                 )}
                               </div>
                               <div className="flex flex-col items-end space-y-2">
-                                <Link
-                                  href={`/product/${item.slug}`}
-                                  target="_blank"
-                                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150"
-                                >
-                                  <ExternalLink className="h-4 w-4 mr-1" />
-                                  مشاهده محصول
-                                </Link>
+                                {/* اگر محصول از Google Shopping است، فقط لینک فروشگاه نمایش دهید */}
+                                {item.link ? (
+                                  <Link
+                                    href={item.link}
+                                    target="_blank"
+                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-150"
+                                  >
+                                    <ExternalLink className="h-4 w-4 mr-1" />
+                                    مشاهده محصول در فروشگاه
+                                  </Link>
+                                ) : (
+                                  /* اگر محصول داخلی است، لینک به صفحه محصول نمایش دهید */
+                                  <Link
+                                    href={`/product/${item.slug}`}
+                                    target="_blank"
+                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150"
+                                  >
+                                    <ExternalLink className="h-4 w-4 mr-1" />
+                                    مشاهده محصول
+                                  </Link>
+                                )}
                                 <span className="text-lg font-semibold text-green-600">
                                   {formatCurrency(item.price * item.quantity)}
                                 </span>

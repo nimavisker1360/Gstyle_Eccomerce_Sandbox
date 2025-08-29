@@ -25,6 +25,8 @@ const orderSchema = new Schema<IOrder>(
         name: { type: String, required: true },
         slug: { type: String, required: true },
         image: { type: String, required: true },
+        // Optional direct product link (for Google Shopping/external items)
+        link: { type: String },
         category: { type: String, required: true },
         price: { type: Number, required: true },
         countInStock: { type: Number, required: true },

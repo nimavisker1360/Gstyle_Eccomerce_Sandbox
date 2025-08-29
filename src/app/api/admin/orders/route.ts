@@ -83,7 +83,14 @@ export async function GET(request: NextRequest) {
         email: transaction.customer?.email || "ایمیل وارد نشده",
       },
       // استفاده از فیلد products به جای cart
-      items: transaction.products || [],
+      items: (transaction.products || []).map((item: any) => ({
+        ...item,
+        // اطمینان از وجود فیلدهای مورد نیاز
+        _id: item.productId || item._id || `item-${Math.random()}`,
+        category: "عمومی", // فیلد پیش‌فرض
+        // حفظ فیلد link برای محصولات خارجی
+        link: item.link,
+      })),
       shippingAddress: {
         fullName:
           `${transaction.customer?.firstName || ""} ${transaction.customer?.lastName || ""}`.trim() ||

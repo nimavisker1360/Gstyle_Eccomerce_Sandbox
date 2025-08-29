@@ -91,11 +91,18 @@ const DiscountProductCard = ({ product }: DiscountProductCardProps) => {
         color: "مشکی", // Default color
         countInStock: 10, // Default stock
         name: product.title,
-        slug: product.id,
+        slug: product.title
+          .toLowerCase()
+          .replace(/[^\w\s-]+/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .replace(/-+/g, "-"),
         category: "تخفیف‌دار",
         price: round2(convertTRYToToman(priceInTRY)),
         quantity: 1,
         image: product.image,
+        // persist external product link if present
+        link: product.link || product.googleShoppingLink,
       };
 
       addItem(cartItem, 1);

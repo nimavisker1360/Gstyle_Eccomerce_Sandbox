@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, ExternalLink, Star } from "lucide-react";
+import useCartStore from "@/hooks/use-cart-store";
+import { useToast } from "@/hooks/use-toast";
 
 interface GoogleShoppingProduct {
   _id: string;
@@ -39,6 +41,9 @@ export default function GoogleShoppingProducts() {
   const [products, setProducts] = useState<CategoryProducts>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { addItem } = useCartStore();
+  const { toast } = useToast();
 
   const searchQueries = useMemo(
     () => ({
@@ -89,9 +94,38 @@ export default function GoogleShoppingProducts() {
     fetchProducts();
   }, [searchQueries]);
 
-  const handleAddToCart = (product: GoogleShoppingProduct) => {
-    // TODO: Implement add to cart functionality
-    console.log("Adding to cart:", product);
+  const handleAddToCart = async (product: GoogleShoppingProduct) => {
+    try {
+      const orderItem = {
+        clientId: `${product._id}-${Date.now()}`,
+        product: product._id,
+        name: product.title_fa || product.title,
+        slug: (product.title_fa || product.title)
+          .toLowerCase()
+          .replace(/\s+/g, "-"),
+        category: "عمومی",
+        quantity: 1,
+        countInStock: 99,
+        image: product.thumbnail,
+        price: parseFloat(product.price) * 10, // تبدیل به تومان
+        size: undefined,
+        color: undefined,
+        // اضافه کردن فیلد link
+        link: product.link,
+      };
+
+      await addItem(orderItem, 1);
+      toast({
+        variant: "success",
+        description: "به سبد خرید اضافه شد",
+      });
+    } catch (error) {
+      console.error("خطا در اضافه کردن به سبد خرید:", error);
+      toast({
+        variant: "destructive",
+        description: "خطا در اضافه کردن به سبد خرید",
+      });
+    }
   };
 
   const handleViewProduct = (product: GoogleShoppingProduct) => {
