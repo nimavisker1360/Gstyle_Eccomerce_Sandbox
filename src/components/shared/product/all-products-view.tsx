@@ -163,7 +163,7 @@ export default function AllProductsView({
         );
       });
     },
-    [EXCLUDED_QUERY_KEYWORDS]
+    []
   );
 
   // تشخیص نوع کتگوری و کوتاه کردن متن نمایشی
@@ -418,7 +418,7 @@ export default function AllProductsView({
         setLoading(false);
       }
     },
-    [brandFilter, typeFilter, EXCLUDED_QUERY_KEYWORDS, filterExcludedProducts]
+    [brandFilter, typeFilter, filterExcludedProducts]
   );
 
   const handleSubmit = (e: React.FormEvent) => {

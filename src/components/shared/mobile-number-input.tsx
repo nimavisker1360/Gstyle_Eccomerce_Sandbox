@@ -104,7 +104,7 @@ export default function MobileNumberInput({
     return () => {
       window.removeEventListener("account-confirm", handler as EventListener);
     };
-  }, [isEditing, mobile, handleSave]);
+  }, [isEditing, mobile, handleSave, onUpdate, router, userId]);
 
   const handleCancel = () => {
     setMobile(currentMobile);

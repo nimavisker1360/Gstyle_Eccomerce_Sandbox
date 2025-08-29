@@ -16,11 +16,38 @@ export interface ITransaction extends Document {
     email?: string;
     address?: string;
   };
+  // اضافه کردن اطلاعات محصولات
+  products?: Array<{
+    productId: string;
+    name: string;
+    slug: string;
+    image: string;
+    price: number;
+    quantity: number;
+    size?: string;
+    color?: string;
+    note?: string;
+  }>;
   metadata?: Record<string, any>;
   verifiedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
+
+const ProductSchema = new Schema(
+  {
+    productId: { type: String, required: true },
+    name: { type: String, required: true },
+    slug: { type: String, required: true },
+    image: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+    size: { type: String },
+    color: { type: String },
+    note: { type: String },
+  },
+  { _id: false }
+);
 
 const TransactionSchema = new Schema<ITransaction>(
   {
@@ -44,6 +71,8 @@ const TransactionSchema = new Schema<ITransaction>(
       email: String,
       address: String,
     },
+    // اضافه کردن فیلد محصولات
+    products: [ProductSchema],
     metadata: { type: Schema.Types.Mixed },
     verifiedAt: { type: Date },
   },

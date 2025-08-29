@@ -8,6 +8,7 @@ import { Transaction } from "@/lib/db/models/transaction.model";
 import { Invoice } from "@/lib/db/models/invoice.model";
 import Cart from "@/lib/db/models/cart.model";
 import { auth } from "@/auth";
+import { sendAdminOrderNotification } from "@/emails/index";
 
 function parseRecipientEmails(input?: string | null): string[] {
   if (!input) return [];
@@ -217,6 +218,14 @@ async function sendInvoiceEmailFromTransaction(params: {
     subject: "فاکتور پرداخت سفارش",
     html,
   });
+
+  // Send admin notification
+  try {
+    await sendAdminOrderNotification({ order: transaction });
+  } catch (adminEmailError) {
+    console.error("Failed to send admin notification:", adminEmailError);
+    // Don't fail the whole process if admin email fails
+  }
 }
 
 async function ensureInvoiceForTransaction(params: {
@@ -252,6 +261,34 @@ async function ensureInvoiceForTransaction(params: {
     },
   });
   return doc;
+}
+
+// تابع جدید برای دریافت اطلاعات محصولات از سبد خرید
+async function getCartProducts(userId: string) {
+  try {
+    if (!userId) return [];
+
+    const userCart = await Cart.findOne({ user: userId });
+    if (!userCart || !userCart.items || userCart.items.length === 0) {
+      return [];
+    }
+
+    // تبدیل آیتم‌های سبد خرید به فرمت مورد نیاز
+    return userCart.items.map((item: any) => ({
+      productId: item.product,
+      name: item.name,
+      slug: item.slug,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+      size: item.size,
+      color: item.color,
+      note: item.note,
+    }));
+  } catch (error) {
+    console.error("Error getting cart products:", error);
+    return [];
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -316,6 +353,10 @@ export async function POST(req: NextRequest) {
             amount: Number(amountInRial),
             // keep any customer info that was saved during create
             customer: existing?.customer ?? undefined,
+            // اضافه کردن اطلاعات محصولات از سبد خرید
+            products: await getCartProducts(
+              session?.user?.id ?? existing?.userId
+            ),
             verifiedAt: new Date(),
           },
           { upsert: false }
@@ -438,6 +479,8 @@ export async function GET(req: NextRequest) {
             refId: String(data.ref_id),
             amount: Number(amountInRial),
             customer: txn?.customer ?? undefined,
+            // اضافه کردن اطلاعات محصولات از سبد خرید
+            products: await getCartProducts(session?.user?.id ?? txn?.userId),
             verifiedAt: new Date(),
           },
           { upsert: false }

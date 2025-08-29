@@ -11,6 +11,7 @@ import { auth } from "@/auth";
 import { OrderInputSchema } from "../validator";
 import Order, { IOrder } from "../db/models/order.model";
 import { revalidatePath } from "next/cache";
+import { sendAdminOrderNotification } from "@/emails";
 
 export async function getOrderById(orderId: string): Promise<IOrder> {
   await connectToDatabase();
@@ -71,6 +72,15 @@ export async function approvePayPalOrder(
     };
     await order.save();
     await sendPurchaseReceipt({ order });
+
+    // Send admin notification
+    try {
+      await sendAdminOrderNotification({ order });
+    } catch (adminEmailError) {
+      console.error("Failed to send admin notification:", adminEmailError);
+      // Don't fail the whole process if admin email fails
+    }
+
     revalidatePath(`/account`);
     return {
       success: true,

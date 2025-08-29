@@ -60,3 +60,6 @@ export const AVAILABLE_DELIVERY_DATES = [
     freeShippingMinPrice: 35,
   },
 ];
+
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "golnazef1360@gmail.com";
+export const ADMIN_NAME = process.env.ADMIN_NAME || "مدیر سیستم";

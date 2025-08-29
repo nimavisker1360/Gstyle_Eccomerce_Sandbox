@@ -104,7 +104,7 @@ export default function PaymentStatusBanner() {
         clearTimeout(urlTimer);
       };
     }
-  }, [searchParams.get("payment"), clearCart]);
+  }, [searchParams, clearCart]);
 
   if (!showBanner || !bannerData) return null;
 

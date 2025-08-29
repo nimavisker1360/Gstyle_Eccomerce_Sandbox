@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { User, LogOut, RefreshCw } from "lucide-react";
+import { User, LogOut, RefreshCw, Shield } from "lucide-react";
 import Link from "next/link";
 import useCartStore from "@/hooks/use-cart-store";
 import { useState, useMemo } from "react";
@@ -156,7 +156,7 @@ export default function UserButtonClient() {
                 <Link className="w-full" href="/admin/overview">
                   <DropdownMenuItem className="flex items-center justify-between gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 cursor-pointer">
                     <span>مدیریت</span>
-                    <User className="w-3 h-3 text-green-600" />
+                    <Shield className="w-3 h-3 text-green-600" />
                   </DropdownMenuItem>
                 </Link>
               )}
