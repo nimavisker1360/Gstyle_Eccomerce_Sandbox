@@ -20,10 +20,12 @@ import { useRouter } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import React from "react";
 import { CardDescription } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CartPage() {
   const { cart, updateItem, removeItem, updateItemNote } = useCartStore();
   const { items } = cart;
+  const { toast } = useToast();
   // Calculate total directly from items (same as checkout)
   const computedItemsPrice =
     items?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
@@ -34,6 +36,30 @@ export default function CartPage() {
   console.log("Cart - Store Items Price:", cart.itemsPrice);
 
   const router = useRouter();
+
+  // Validation function to check if all items have descriptions
+  const validateCartDescriptions = () => {
+    const itemsWithoutDescription = items.filter(
+      (item) => !item.note || item.note.trim() === ""
+    );
+
+    if (itemsWithoutDescription.length > 0) {
+      toast({
+        title: "توضیحات محصولات الزامی است",
+        description: "حتما قسمت توضیحات سایز و رنگ و بقیه موارد مشخص کنید",
+        variant: "success",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  // Handle checkout button click with validation
+  const handleProceedToCheckout = () => {
+    if (validateCartDescriptions()) {
+      router.push("/checkout");
+    }
+  };
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-4  md:gap-4">
@@ -230,7 +256,7 @@ export default function CartPage() {
                     </span>{" "}
                   </div>
                   <Button
-                    onClick={() => router.push("/checkout")}
+                    onClick={handleProceedToCheckout}
                     className="rounded-none w-full bg-green-600 hover:bg-green-700"
                   >
                     ادامه به تسویه حساب
