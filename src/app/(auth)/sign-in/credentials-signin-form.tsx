@@ -188,6 +188,16 @@ export default function CredentialsSignInForm() {
             )}
           />
 
+          {/* Forgot Password Link */}
+          <div className="text-sm text-right">
+            <Link
+              href="/forgot-password"
+              className="text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+            >
+              رمز عبور خود را فراموش کرده‌اید؟
+            </Link>
+          </div>
+
           <div>
             <Button
               type="submit"

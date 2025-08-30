@@ -298,13 +298,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { Authority, Status, amount, orderId } = body;
 
-    // Environment-based URL configuration
-    const isProduction =
-      process.env.ZARINPAL_MODE === "production" ||
-      process.env.NODE_ENV === "production";
-    const verifyUrl = isProduction
-      ? "https://www.zarinpal.com/pg/v4/payment/verify.json"
-      : "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
+    // Force sandbox mode for testing
+    const isProduction = false;
+    const verifyUrl = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
 
     // Validate required fields
     if (!Authority) {
@@ -417,13 +413,9 @@ export async function GET(req: NextRequest) {
     const amount = searchParams.get("amount");
     const orderId = searchParams.get("orderId");
 
-    // Environment-based URL configuration
-    const isProduction =
-      process.env.ZARINPAL_MODE === "production" ||
-      process.env.NODE_ENV === "production";
-    const verifyUrl = isProduction
-      ? "https://www.zarinpal.com/pg/v4/payment/verify.json"
-      : "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
+    // Force sandbox mode for testing
+    const isProduction = false;
+    const verifyUrl = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
 
     if (Status !== "OK") {
       // mark cancelled

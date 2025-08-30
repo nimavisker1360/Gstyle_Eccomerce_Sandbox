@@ -39,6 +39,13 @@ export const round2 = (num: number) =>
 export const generateId = () =>
   Array.from({ length: 24 }, () => Math.floor(Math.random() * 10)).join("");
 
+// Generate secure token for password reset
+export const generateToken = (): string => {
+  return Array.from({ length: 32 }, () =>
+    Math.floor(Math.random() * 16).toString(16)
+  ).join("");
+};
+
 // ===== Currency: TRY → Toman (fixed rate) =====
 // 1 TRY = 3200 Toman (fixed)
 export const TRY_TO_TOMAN_RATE = 3200;

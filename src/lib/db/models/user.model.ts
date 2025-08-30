@@ -12,6 +12,8 @@ export interface IUser extends Document, IUserInput {
   _id: string;
   createdAt: Date;
   updatedAt: Date;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 const userSchema = new Schema<IUser>(
@@ -24,6 +26,8 @@ const userSchema = new Schema<IUser>(
     emailVerified: { type: Boolean, default: false },
     mobile: { type: String },
     paymentMethod: { type: String },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
     address: {
       fullName: { type: String },
       street: { type: String },
