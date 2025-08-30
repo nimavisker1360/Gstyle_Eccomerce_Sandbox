@@ -61,8 +61,8 @@ export default function CartPage() {
     }
   };
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-4  md:gap-4">
+    <div className="min-h-screen pb-4">
+      <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
         {items.length === 0 ? (
           <Card className="col-span-4 rounded-none bg-gradient-to-l from-green-50 to-blue-50 border-green-200">
             <CardContent className="p-10">
@@ -94,7 +94,7 @@ export default function CartPage() {
           </Card>
         ) : (
           <>
-            <div className="col-span-3">
+            <div className="w-full md:col-span-3">
               <Card className="rounded-none bg-gradient-to-l from-green-50 to-blue-50 border-green-200">
                 <CardHeader className="text-3xl pb-0 text-right">
                   سبد خرید
@@ -234,9 +234,9 @@ export default function CartPage() {
                 </CardContent>
               </Card>
             </div>
-            <div>
+            <div className="w-full md:col-span-1 mt-4 md:mt-0">
               <Card className="rounded-none bg-gradient-to-l from-blue-50 to-green-50 border-blue-200">
-                <CardContent className="py-4 space-y-4 text-right">
+                <CardContent className="p-4 md:py-4 space-y-4 text-right">
                   {computedItemsPrice < FREE_SHIPPING_MIN_PRICE ? (
                     <div className="flex-1">
                       اضافه کنید{" "}
@@ -248,7 +248,7 @@ export default function CartPage() {
                       از محصولات واجد شرایط به سفارش خود برای ارسال رایگان
                     </div>
                   ) : null}
-                  <div className="text-lg">
+                  <div className="text-base md:text-lg font-medium">
                     جمع کل (
                     {items.reduce((acc, item) => acc + item.quantity, 0)} آیتم):{" "}
                     <span className="font-bold text-green-700">
@@ -257,7 +257,7 @@ export default function CartPage() {
                   </div>
                   <Button
                     onClick={handleProceedToCheckout}
-                    className="rounded-none w-full bg-green-600 hover:bg-green-700"
+                    className="rounded-none w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 text-base md:text-sm"
                   >
                     ادامه به تسویه حساب
                   </Button>
