@@ -15,16 +15,14 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { IUserSignUp } from "@/types";
-import {
-  registerUser,
-  signInWithCredentials,
-} from "@/lib/actions/user.actions";
+import { registerUser } from "@/lib/actions/user.actions";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignUpSchema } from "@/lib/validator";
 import { Separator } from "@/components/ui/separator";
 import { APP_NAME } from "@/lib/constants";
 import SignupLoading from "@/components/shared/auth/signup-loading";
+import { Eye, EyeOff } from "lucide-react";
 
 const signUpDefaultValues = {
   name: "",
@@ -36,6 +34,8 @@ const signUpDefaultValues = {
 export default function SignUpForm() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -62,26 +62,7 @@ export default function SignUpForm() {
         return;
       }
 
-      // Automatically sign in the user after successful registration
-      const signInResult = await signInWithCredentials({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (signInResult?.error || signInResult?.status === "error") {
-        setIsLoading(false);
-        toast({
-          title: "موفقیت",
-          description: "حساب کاربری ایجاد شد! لطفاً به صورت دستی وارد شوید.",
-          variant: "default",
-        });
-        window.location.href = `/sign-in?callbackUrl=${encodeURIComponent(
-          callbackUrl
-        )}`;
-        return;
-      }
-
-      // Successfully signed in, show success toast and redirect to home
+      // Successfully registered, show success toast and redirect to sign-in page
       toast({
         title: "موفقیت",
         description: "ثبت نام با موفقیت انجام شد",
@@ -89,9 +70,9 @@ export default function SignUpForm() {
         duration: 3000,
       });
 
-      // Wait for toast to show, then redirect
+      // Redirect to sign-in page after a short delay
       setTimeout(() => {
-        router.push(callbackUrl);
+        router.push(`/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}`);
       }, 1000);
     } catch (error) {
       setIsLoading(false);
@@ -119,7 +100,7 @@ export default function SignUpForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="text-right w-full">
-                  نام و نام خانوادگی
+                  نام و نام خانوادگی <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -138,7 +119,9 @@ export default function SignUpForm() {
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-right w-full">ایمیل</FormLabel>
+                <FormLabel className="text-right w-full">
+                  ایمیل <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     className="text-right"
@@ -156,39 +139,71 @@ export default function SignUpForm() {
             name="password"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-right w-full">رمز عبور</FormLabel>
+                <FormLabel className="text-right w-full">
+                  رمز عبور <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    className="text-right"
-                    placeholder="رمز عبور را وارد کنید"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      className="text-right pr-10"
+                      placeholder="رمز عبور را وارد کنید"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={control}
             name="confirmPassword"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="text-right w-full">
-                  تایید رمز عبور
+                  تایید رمز عبور <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    className="text-right"
-                    placeholder="تایید رمز عبور"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="text-right pr-10"
+                      placeholder="تایید رمز عبور"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <div>
             <Button
               type="submit"
@@ -203,6 +218,7 @@ export default function SignUpForm() {
               ثبت نام
             </Button>
           </div>
+
           <div className="text-sm text-right">
             با ایجاد حساب کاربری، با قوانین {APP_NAME} موافقت می‌کنید:
             <div
@@ -229,7 +245,9 @@ export default function SignUpForm() {
               </label>
             </div>
           </div>
+
           <Separator className="mb-4" />
+
           <div className="text-sm text-right">
             قبلاً حساب دارید؟{" "}
             <Link className="link" href={`/sign-in?callbackUrl=${callbackUrl}`}>

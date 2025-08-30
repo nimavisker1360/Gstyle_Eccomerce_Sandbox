@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignInSchema } from "@/lib/validator";
 import { APP_NAME } from "@/lib/constants";
 import SigninLoading from "@/components/shared/auth/signin-loading";
+import { Eye, EyeOff } from "lucide-react";
 
 const signInDefaultValues = {
   email: "",
@@ -33,6 +34,7 @@ export default function CredentialsSignInForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<IUserSignIn>({
     resolver: zodResolver(UserSignInSchema),
@@ -161,12 +163,25 @@ export default function CredentialsSignInForm() {
               <FormItem className="w-full">
                 <FormLabel className="text-right w-full">رمز عبور</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    className="text-right"
-                    placeholder="رمز عبور را وارد کنید"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      className="text-right pr-10"
+                      placeholder="رمز عبور را وارد کنید"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

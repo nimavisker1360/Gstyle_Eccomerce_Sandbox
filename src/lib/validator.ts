@@ -163,14 +163,19 @@ export const CartSchema = z.object({
 // USER
 const UserName = z
   .string()
-  .min(2, { message: "Username must be at least 2 characters" })
-  .max(50, { message: "Username must be at most 30 characters" });
+  .min(1, { message: "نام و نام خانوادگی الزامی است" })
+  .min(2, { message: "نام و نام خانوادگی باید حداقل ۲ کاراکتر باشد" })
+  .max(50, { message: "نام و نام خانوادگی باید حداکثر ۵۰ کاراکتر باشد" });
 const Email = z
   .string()
-  .min(1, "Email is required")
-  .email("Email is invalid")
+  .min(1, "ایمیل الزامی است")
+  .email("فرمت ایمیل نامعتبر است")
   .transform((val) => val.toLowerCase());
-const Password = z.string().min(3, "Password must be at least 3 characters");
+const Password = z
+  .string()
+  .min(1, "رمز عبور الزامی است")
+  .min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد")
+  .regex(/^(?=.*[a-zA-Z])(?=.*\d)/, "رمز عبور باید شامل حروف و اعداد باشد");
 const UserRole = z.string().min(1, "role is required");
 
 export const UserInputSchema = z.object({
