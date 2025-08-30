@@ -29,7 +29,6 @@ import SignupLoading from "@/components/shared/auth/signup-loading";
 const signUpDefaultValues = {
   name: "",
   email: "",
-  mobile: "",
   password: "",
   confirmPassword: "",
 };
@@ -119,11 +118,13 @@ export default function SignUpForm() {
             name="name"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-right w-full">نام</FormLabel>
+                <FormLabel className="text-right w-full">
+                  نام و نام خانوادگی
+                </FormLabel>
                 <FormControl>
                   <Input
                     className="text-right"
-                    placeholder="نام را وارد کنید"
+                    placeholder="نام و نام خانوادگی را وارد کنید"
                     {...field}
                   />
                 </FormControl>
@@ -146,31 +147,6 @@ export default function SignUpForm() {
                   />
                 </FormControl>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-right w-full">
-                  شماره موبایل
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="text-right"
-                    placeholder="شماره موبایل را وارد کنید"
-                    type="tel"
-                    maxLength={11}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-                <p className="text-xs text-gray-500 text-right mt-1">
-                  شماره موبایل برای ارتباط بهتر و اطلاع‌رسانی سفارشات ضروری است
-                </p>
               </FormItem>
             )}
           />

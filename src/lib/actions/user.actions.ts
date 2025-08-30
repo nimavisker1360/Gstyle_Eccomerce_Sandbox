@@ -13,7 +13,7 @@ import { UserSignUpSchema } from "../validator";
 export async function signInWithCredentials(user: IUserSignIn) {
   try {
     const result = await signIn("credentials", {
-      email: user.email,
+      email: user.email.toLowerCase(),
       password: user.password,
       redirect: false,
     });
@@ -38,7 +38,7 @@ export async function signInWithCredentials(user: IUserSignIn) {
 export async function testUserCredentials(user: IUserSignIn) {
   try {
     await connectToDatabase();
-    const dbUser = await User.findOne({ email: user.email });
+    const dbUser = await User.findOne({ email: user.email.toLowerCase() });
 
     if (!dbUser) {
       return { error: "User not found", userExists: false };
@@ -77,8 +77,7 @@ export async function registerUser(userSignUp: IUserSignUp) {
   try {
     const user = await UserSignUpSchema.parseAsync({
       name: userSignUp.name,
-      email: userSignUp.email,
-      mobile: userSignUp.mobile,
+      email: userSignUp.email.toLowerCase(),
       password: userSignUp.password,
       confirmPassword: userSignUp.confirmPassword,
     });

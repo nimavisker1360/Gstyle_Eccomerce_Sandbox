@@ -25,7 +25,6 @@ import SigninLoading from "@/components/shared/auth/signin-loading";
 
 const signInDefaultValues = {
   email: "",
-  mobile: "",
   password: "",
 };
 
@@ -55,7 +54,7 @@ export default function CredentialsSignInForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: data.email,
+          email: data.email.toLowerCase(),
           password: data.password,
         }),
       });
@@ -85,7 +84,7 @@ export default function CredentialsSignInForm() {
 
       // If credentials are valid, attempt NextAuth sign-in
       const result = await signIn("credentials", {
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: data.password,
         redirect: false,
       });
@@ -149,27 +148,6 @@ export default function CredentialsSignInForm() {
                     placeholder="آدرس ایمیل را وارد کنید"
                     {...field}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                {/* <FormLabel className="text-right w-full">
-                  شماره موبایل (اختیاری)
-                </FormLabel> */}
-                <FormControl>
-                  {/* <Input
-                    className="text-right"
-                    type="tel"
-                    {...field}
-                    placeholder="شماره موبایل را وارد کنید "
-                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
