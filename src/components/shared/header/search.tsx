@@ -2,12 +2,11 @@
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useRef } from "react";
+import { FormEvent, useRef } from "react";
 
 export default function Search() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,24 +21,8 @@ export default function Search() {
     router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
   };
 
-  // 1s debounce on typing to avoid rapid requests
-  useEffect(() => {
-    const el = inputRef.current;
-    if (!el) return;
-    const onInput = () => {
-      const value = el.value.trim();
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      if (!value) return;
-      debounceTimer.current = setTimeout(() => {
-        router.push(`/search?q=${encodeURIComponent(value)}`);
-      }, 1000);
-    };
-    el.addEventListener("input", onInput);
-    return () => {
-      el.removeEventListener("input", onInput);
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    };
-  }, [router]);
+  // Search only triggers on form submit (Enter key or search button click)
+  // Removed automatic debounced search to prevent premature search operations
 
   return (
     <form onSubmit={handleSubmit} className="flex items-stretch h-12 w-full">

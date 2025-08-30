@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Search, Sparkles, Heart, ShoppingCart, Star, Eye } from "lucide-react";
+import {
+  Search,
+  Sparkles,
+  Heart,
+  ShoppingCart,
+  Star,
+  Eye,
+  Plus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -330,6 +338,16 @@ export default function IntelligentBeautySearch({
             </div>
           ) : (
             <>
+              {/* متن راهنما */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <p className="text-blue-800 text-sm text-center font-medium md:font-normal">
+                برای سفارش محصول روی
+                <span className="inline-flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full mr-3 ml-3">
+                  +
+                </span>
+                کلیک کنید تا محصول به سبد خرید انتقال داده بشه
+              </p>
+            </div>
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-800">
                   {categoryIcon} {products.length} محصول زیبایی یافت شد
@@ -363,6 +381,15 @@ export default function IntelligentBeautySearch({
                               تخفیف
                             </Badge>
                           )}
+
+                        {/* دکمه اضافه به سبد خرید */}
+                        <button
+                          onClick={() => handleAddToCart(product)}
+                          className="absolute top-1 left-1 w-6 h-6 md:w-5 md:h-5 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 shadow-md z-10"
+                          title="اضافه به سبد خرید"
+                        >
+                          <Plus className="w-4 h-4 md:w-3 md:h-3" />
+                        </button>
                       </div>
 
                       {/* Product Info */}

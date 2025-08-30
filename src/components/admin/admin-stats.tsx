@@ -154,9 +154,9 @@ export default function AdminStats() {
             <div className="flex flex-col h-full">
               {/* آیکون بالا */}
               <div className="flex justify-center mb-2 md:mb-3">
-                <div className={`${stat.bgColor} p-2 md:p-3 rounded-full`}>
+                <div className={`${stat.bgColor} p-3 md:p-3 rounded-full`}>
                   <IconComponent
-                    className={`w-5 h-5 md:w-6 md:h-6 ${stat.textColor}`}
+                    className={`w-6 h-6 md:w-6 md:h-6 ${stat.textColor}`}
                   />
                 </div>
               </div>

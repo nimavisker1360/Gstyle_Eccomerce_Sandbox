@@ -630,16 +630,11 @@ export default function SearchProductsLayout({
     handleSearch(searchQuery);
   };
 
-  // Debounce live search input changes (500ms)
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Search only triggers on form submit (Enter key or search button click)
+  // Removed automatic debounced search to prevent premature search operations
   const onChangeDebounced = (value: string) => {
     setSearchQuery(value);
-    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-    debounceTimerRef.current = setTimeout(() => {
-      if (value.trim()) {
-        handleSearch(value);
-      }
-    }, 500);
+    // No automatic search - user must press Enter or click search button
   };
 
   // جستجوی اولیه - فقط اگر query وجود داشته باشد
@@ -667,6 +662,17 @@ export default function SearchProductsLayout({
         {/* همه محصولات در گرید */}
         {products.length > 0 && (
           <div>
+            {/* متن راهنما */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <p className="text-blue-800 text-sm text-center font-medium md:font-normal">
+                برای سفارش محصول روی
+                <span className="inline-flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full mr-3 ml-3">
+                  +
+                </span>
+                کلیک کنید تا محصول به سبد خرید انتقال داده بشه
+              </p>
+            </div>
+
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-800 text-right">
                 محصولات پیشنهادی

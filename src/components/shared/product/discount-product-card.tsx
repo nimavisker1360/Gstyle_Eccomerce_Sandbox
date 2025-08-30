@@ -149,10 +149,10 @@ const DiscountProductCard = ({ product }: DiscountProductCardProps) => {
           <div className="absolute top-2 right-2">
             <Button
               size="sm"
-              className="bg-green-500 hover:bg-green-600 text-white p-2 h-8 w-8 rounded-full"
+              className="bg-green-500 hover:bg-green-600 text-white p-2 h-8 w-8 md:h-6 md:w-6 rounded-full"
               onClick={handleAddToCart}
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-4 h-4 md:w-2 md:h-2" />
             </Button>
           </div>
         </div>

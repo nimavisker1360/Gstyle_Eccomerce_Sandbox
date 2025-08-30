@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignUpSchema } from "@/lib/validator";
 import { Separator } from "@/components/ui/separator";
 import { APP_NAME } from "@/lib/constants";
+import SignupLoading from "@/components/shared/auth/signup-loading";
 
 const signUpDefaultValues = {
   name: "",
@@ -35,7 +36,9 @@ const signUpDefaultValues = {
 
 export default function SignUpForm() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const form = useForm<IUserSignUp>({
@@ -46,11 +49,14 @@ export default function SignUpForm() {
   const { control, handleSubmit } = form;
 
   const onSubmit = async (data: IUserSignUp) => {
+    setIsLoading(true);
+
     try {
       const res = await registerUser(data);
       if (!res.success) {
+        setIsLoading(false);
         toast({
-          title: "Error",
+          title: "خطا",
           description: res.error,
           variant: "destructive",
         });
@@ -64,9 +70,10 @@ export default function SignUpForm() {
       });
 
       if (signInResult?.error || signInResult?.status === "error") {
+        setIsLoading(false);
         toast({
-          title: "Success",
-          description: "Account created! Please sign in manually.",
+          title: "موفقیت",
+          description: "حساب کاربری ایجاد شد! لطفاً به صورت دستی وارد شوید.",
           variant: "default",
         });
         window.location.href = `/sign-in?callbackUrl=${encodeURIComponent(
@@ -75,22 +82,32 @@ export default function SignUpForm() {
         return;
       }
 
-      // Successfully signed in, redirect to home
+      // Successfully signed in, show success toast and redirect to home
       toast({
-        title: "Success",
-        description: "Account created and signed in successfully!",
-        variant: "default",
+        title: "موفقیت",
+        description: "ثبت نام با موفقیت انجام شد",
+        variant: "success",
+        duration: 3000,
       });
 
-      redirect(callbackUrl);
+      // Wait for toast to show, then redirect
+      setTimeout(() => {
+        router.push(callbackUrl);
+      }, 1000);
     } catch (error) {
+      setIsLoading(false);
       toast({
-        title: "Error",
-        description: "Failed to create account. Please try again.",
+        title: "خطا",
+        description: "خطا در ایجاد حساب کاربری. لطفاً دوباره تلاش کنید.",
         variant: "destructive",
       });
     }
   };
+
+  // Show loading component while processing
+  if (isLoading) {
+    return <SignupLoading />;
+  }
 
   return (
     <Form {...form}>

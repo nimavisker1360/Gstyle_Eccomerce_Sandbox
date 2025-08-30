@@ -255,6 +255,16 @@ export default function DiscountProductsGrid({
       {/* Header with refresh button */}
       {/* Header removed as requested */}
 
+      {/* متن راهنما */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+        <p className="text-blue-800 text-sm text-center font-medium md:font-normal">
+          برای سفارش محصول روی
+          <span className="inline-flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full mr-3 ml-3">
+            +
+          </span>
+          کلیک کنید تا محصول به سبد خرید انتقال داده بشه
+        </p>
+      </div>
       {/* Products grid */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
         {products.map((product, index) => (

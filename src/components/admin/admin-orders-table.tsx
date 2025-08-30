@@ -281,7 +281,7 @@ export default function AdminOrdersTable() {
                     <User className="h-4 w-4 md:h-5 md:w-5 mr-2 text-green-600" />
                     اطلاعات مشتری
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                  <div className="space-y-3 md:space-y-4">
                     <div className="flex items-start space-x-2 space-x-reverse">
                       <span className="text-sm text-gray-600 flex-shrink-0">
                         نام:
@@ -296,14 +296,14 @@ export default function AdminOrdersTable() {
                         {order.shippingAddress?.phone}
                       </span>
                     </div>
-                    <div className="flex items-start space-x-2 space-x-reverse sm:col-span-2">
+                    <div className="flex items-start space-x-2 space-x-reverse">
                       <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0 mt-0.5" />
                       <span className="text-sm font-medium break-words">
                         {order.shippingAddress?.street},{" "}
                         {order.shippingAddress?.city}
                       </span>
                     </div>
-                    <div className="flex items-start space-x-2 space-x-reverse sm:col-span-2">
+                    <div className="flex items-start space-x-2 space-x-reverse">
                       <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0 mt-0.5" />
                       <span className="text-sm font-medium">
                         تحویل: {formatDate(order.expectedDeliveryDate)}
@@ -340,7 +340,7 @@ export default function AdminOrdersTable() {
                                 <h5 className="text-sm md:text-lg font-medium text-gray-900 mb-2 break-words">
                                   {item.name}
                                 </h5>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs md:text-sm text-gray-600">
+                                <div className="space-y-2 text-xs md:text-sm text-gray-600">
                                   <div>قیمت: {formatCurrency(item.price)}</div>
                                   <div>تعداد: {item.quantity}</div>
                                   {item.size && <div>سایز: {item.size}</div>}

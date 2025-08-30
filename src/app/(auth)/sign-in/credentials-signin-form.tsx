@@ -1,5 +1,6 @@
 "use client";
-import { redirect, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignInSchema } from "@/lib/validator";
 import { APP_NAME } from "@/lib/constants";
+import SigninLoading from "@/components/shared/auth/signin-loading";
 
 const signInDefaultValues = {
   email: "",
@@ -28,7 +30,9 @@ const signInDefaultValues = {
 };
 
 export default function CredentialsSignInForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const form = useForm<IUserSignIn>({
@@ -39,6 +43,8 @@ export default function CredentialsSignInForm() {
   const { control, handleSubmit } = form;
 
   const onSubmit = async (data: IUserSignIn) => {
+    setIsLoading(true);
+
     try {
       console.log("Attempting sign in with:", data.email);
 
@@ -58,18 +64,20 @@ export default function CredentialsSignInForm() {
       console.log("Test API result:", testResult);
 
       if (!testResult.success) {
+        setIsLoading(false);
         toast({
-          title: "Error",
-          description: testResult.error || "Authentication failed",
+          title: "خطا",
+          description: testResult.error || "احراز هویت ناموفق بود",
           variant: "destructive",
         });
         return;
       }
 
       if (!testResult.passwordValid) {
+        setIsLoading(false);
         toast({
-          title: "Error",
-          description: "Invalid password",
+          title: "خطا",
+          description: "رمز عبور نامعتبر است",
           variant: "destructive",
         });
         return;
@@ -85,25 +93,44 @@ export default function CredentialsSignInForm() {
       console.log("Sign in result:", result);
 
       if (result?.error) {
+        setIsLoading(false);
         console.log("Sign in failed:", result.error);
         toast({
-          title: "Error",
-          description: "NextAuth authentication failed",
+          title: "خطا",
+          description: "احراز هویت NextAuth ناموفق بود",
           variant: "destructive",
         });
       } else {
-        console.log("Sign in successful, redirecting...");
-        window.location.href = callbackUrl;
+        console.log("Sign in successful, showing toast and redirecting...");
+
+        // Show success toast and redirect to home
+        toast({
+          title: "موفقیت",
+          description: "ورود با موفقیت انجام شد",
+          variant: "success",
+          duration: 3000,
+        });
+
+        // Wait for toast to show, then redirect
+        setTimeout(() => {
+          router.push(callbackUrl);
+        }, 1000);
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Sign in error:", error);
       toast({
-        title: "Error",
-        description: "Authentication failed",
+        title: "خطا",
+        description: "احراز هویت ناموفق بود",
         variant: "destructive",
       });
     }
   };
+
+  // Show loading component while processing
+  if (isLoading) {
+    return <SigninLoading />;
+  }
 
   return (
     <Form {...form}>

@@ -143,7 +143,7 @@ export default function ShoppingProductCard({
             />
           </div>
           {hasDiscount && (
-            <Badge className="absolute top-1 left-1 bg-red-500 text-white text-xs">
+            <Badge className="absolute top-1 left-1 bg-red-500 text-white text-xs z-10">
               {discountPercentage}% تخفیف
             </Badge>
           )}
@@ -151,10 +151,10 @@ export default function ShoppingProductCard({
           {/* دکمه اضافه به سبد خرید */}
           <button
             onClick={handleAddToCart}
-            className="absolute top-1 right-1 w-6 h-6 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 shadow-md"
+            className="absolute top-1 right-1 w-6 h-6 md:w-5 md:h-5 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 shadow-md z-10"
             title="اضافه به سبد خرید"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 md:w-3 md:h-3" />
           </button>
         </div>
 
