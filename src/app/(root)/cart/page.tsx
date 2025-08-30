@@ -17,7 +17,7 @@ import { formatPersianAmount } from "@/lib/utils/format-persian-numbers";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, ArrowLeft } from "lucide-react";
 import React from "react";
 import { CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -97,7 +97,15 @@ export default function CartPage() {
             <div className="w-full md:col-span-3">
               <Card className="rounded-none bg-gradient-to-l from-green-50 to-blue-50 border-green-200">
                 <CardHeader className="text-3xl pb-0 text-right">
-                  سبد خرید
+                  <div className="flex items-center justify-between">
+                    <Link href="/" className="inline-flex">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                        <ArrowLeft className="w-4 h-4" />
+                        برگشت به صفحه اول
+                      </Button>
+                    </Link>
+                    <h1 className="text-3xl">سبد خرید</h1>
+                  </div>
                   <CardDescription className="text-sm text-green-700 text-right">
                     اقلام انتخاب‌شده شما در زیر نمایش داده می‌شود
                   </CardDescription>

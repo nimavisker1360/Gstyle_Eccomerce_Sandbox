@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     // Get Zarinpal credentials from environment variables
     const merchantId = process.env.ZARINPAL_MERCHANT_ID;
-    const isProduction = false;
+    const isProduction = true;
 
     if (!merchantId) {
       console.error("ZARINPAL_MERCHANT_ID not found in environment variables");
@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Zarinpal API endpoints - Force sandbox mode for testing
-    const baseUrl = "https://sandbox.zarinpal.com/pg/rest/WebGate";
+    // Zarinpal API endpoints - Production mode
+    const baseUrl = isProduction
+      ? "https://www.zarinpal.com/pg/rest/WebGate"
+      : "https://sandbox.zarinpal.com/pg/rest/WebGate";
 
     // Prepare verification data
     const verificationData = {

@@ -26,8 +26,8 @@ export async function POST(request: NextRequest) {
     });
 
     const merchantId = process.env.ZARINPAL_MERCHANT_ID;
-    // Force sandbox mode for testing
-    const isProduction = false;
+    // Production mode
+    const isProduction = true;
 
     if (!merchantId) {
       console.error("ZARINPAL_MERCHANT_ID not found in environment variables");
@@ -37,27 +37,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For testing purposes - simulate successful response if using test merchant ID
-    const isTestMode = merchantId === "b2734f32-2b26-499a-bdb0-5477bef46783";
-
-    if (isTestMode) {
-      console.log(
-        "Running in test mode - simulating successful payment request"
-      );
-      const testAuthority = `TEST-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      const testPaymentUrl = `https://sandbox.zarinpal.com/pg/StartPay/${testAuthority}`;
-
-      return NextResponse.json({
-        success: true,
-        authority: testAuthority,
-        paymentUrl: testPaymentUrl,
-        message: "درخواست پرداخت تست با موفقیت ایجاد شد",
-        isTestMode: true,
-      });
-    }
-
-    // Zarinpal API endpoints - Force sandbox mode for testing
-    const baseUrl = "https://sandbox.zarinpal.com/pg/rest/WebGate";
+    // Zarinpal API endpoints - Production mode
+    const baseUrl = isProduction
+      ? "https://www.zarinpal.com/pg/rest/WebGate"
+      : "https://sandbox.zarinpal.com/pg/rest/WebGate";
 
     // Convert Toman to Rial for Zarinpal API (1 Toman = 10 Rial)
     const amountInRial = tomanToRial(amount);
@@ -103,7 +86,9 @@ export async function POST(request: NextRequest) {
 
     if (zarinpalResult.Status === 100) {
       // Success - redirect to Zarinpal payment page
-      const paymentUrl = `https://sandbox.zarinpal.com/pg/StartPay/${zarinpalResult.Authority}`;
+      const paymentUrl = isProduction
+        ? `https://www.zarinpal.com/pg/StartPay/${zarinpalResult.Authority}`
+        : `https://sandbox.zarinpal.com/pg/StartPay/${zarinpalResult.Authority}`;
 
       console.log("Payment request successful:", {
         authority: zarinpalResult.Authority,

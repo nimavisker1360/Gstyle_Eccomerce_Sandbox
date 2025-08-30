@@ -52,23 +52,25 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const response = await axios.post(
-      "https://sandbox.zarinpal.com/pg/v4/payment/request.json",
-      {
-        merchant_id: process.env.ZARINPAL_MERCHANT_ID,
-        amount: amountInRial, // مبلغ به ریال (تبدیل شده از تومان)
-        description: description,
-        callback_url: callbackURL, // آدرس برگشت
-        metadata: customerInfo
-          ? {
-              customer_name: `${customerInfo.firstName} ${customerInfo.lastName}`,
-              customer_phone: customerInfo.phone,
-              customer_email: customerInfo.email,
-              customer_address: customerInfo.address,
-            }
-          : undefined,
-      }
-    );
+    const isProduction = true;
+    const apiUrl = isProduction
+      ? "https://api.zarinpal.com/pg/v4/payment/request.json"
+      : "https://sandbox.zarinpal.com/pg/v4/payment/request.json";
+
+    const response = await axios.post(apiUrl, {
+      merchant_id: process.env.ZARINPAL_MERCHANT_ID,
+      amount: amountInRial, // مبلغ به ریال (تبدیل شده از تومان)
+      description: description,
+      callback_url: callbackURL, // آدرس برگشت
+      metadata: customerInfo
+        ? {
+            customer_name: `${customerInfo.firstName} ${customerInfo.lastName}`,
+            customer_phone: customerInfo.phone,
+            customer_email: customerInfo.email,
+            customer_address: customerInfo.address,
+          }
+        : undefined,
+    });
 
     const { data } = response.data;
 
@@ -113,10 +115,14 @@ export async function POST(req: NextRequest) {
       }
 
       // ریدایرکت کاربر به درگاه پرداخت
+      const paymentUrl = isProduction
+        ? `https://www.zarinpal.com/pg/StartPay/${authority}`
+        : `https://sandbox.zarinpal.com/pg/StartPay/${authority}`;
+
       return NextResponse.json({
         success: true,
         authority: authority,
-        paymentUrl: `https://sandbox.zarinpal.com/pg/StartPay/${authority}`,
+        paymentUrl: paymentUrl,
         message: "درخواست پرداخت با موفقیت ایجاد شد",
         customerInfo: customerInfo,
       });

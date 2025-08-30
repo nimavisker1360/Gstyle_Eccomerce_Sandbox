@@ -101,9 +101,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { Authority, Status, amount, orderId } = body;
 
-    // Force sandbox mode for testing
-    const isProduction = false;
-    const verifyUrl = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
+    // Production mode
+    const isProduction = true;
+    const verifyUrl = isProduction
+      ? "https://api.zarinpal.com/pg/v4/payment/verify.json"
+      : "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
 
     // Validate required fields
     if (!Authority) {
@@ -216,9 +218,11 @@ export async function GET(req: NextRequest) {
     const amount = searchParams.get("amount");
     const orderId = searchParams.get("orderId");
 
-    // Force sandbox mode for testing
-    const isProduction = false;
-    const verifyUrl = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
+    // Production mode
+    const isProduction = true;
+    const verifyUrl = isProduction
+      ? "https://api.zarinpal.com/pg/v4/payment/verify.json"
+      : "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
 
     if (Status !== "OK") {
       // mark cancelled

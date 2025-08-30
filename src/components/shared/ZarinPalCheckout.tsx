@@ -203,14 +203,14 @@ export default function ZarinPalCheckout({
                 شماره تلفن <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <Phone className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Phone className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="tel"
                   id="phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-4 sm:py-3 pr-12 border rounded-lg transition-all duration-200 text-right placeholder-gray-400 text-base focus:outline-none ${
+                  className={`w-full px-4 py-4 sm:py-3 sm:pr-12 border rounded-lg transition-all duration-200 text-right placeholder-gray-400 text-base focus:outline-none ${
                     formData.phone.trim() !== ""
                       ? "border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       : "border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -230,14 +230,14 @@ export default function ZarinPalCheckout({
                 ایمیل <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-4 sm:py-3 pr-12 border rounded-lg transition-all duration-200 text-right placeholder-gray-400 text-base focus:outline-none ${
+                  className={`w-full px-4 py-4 sm:py-3 sm:pr-12 border rounded-lg transition-all duration-200 text-right placeholder-gray-400 text-base focus:outline-none ${
                     formData.email.trim() !== ""
                       ? "border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       : "border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -257,14 +257,14 @@ export default function ZarinPalCheckout({
                 آدرس کامل <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <MapPin className="absolute right-4 top-4 w-5 h-5 text-gray-400" />
+                <MapPin className="hidden sm:block absolute right-4 top-4 w-5 h-5 text-gray-400" />
                 <textarea
                   id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
                   rows={4}
-                  className={`w-full px-4 py-4 sm:py-3 pr-12 border rounded-lg transition-all duration-200 text-right resize-none placeholder-gray-400 text-base focus:outline-none ${
+                  className={`w-full px-4 py-4 sm:py-3 sm:pr-12 border rounded-lg transition-all duration-200 text-right resize-none placeholder-gray-400 text-base focus:outline-none ${
                     formData.address.trim() !== ""
                       ? "border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       : "border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
